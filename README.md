@@ -30,7 +30,7 @@ KipuBankV3 evoluciona la arquitectura de KipuBankV2 hacia un sistema **interoper
 ---
 
 ## 📁 Estructura del repositorio
-
+```bash
 kipu-bank-v3/
 ├─ src/
 │  └─ KipuBankV3.sol
