@@ -33,15 +33,16 @@ KipuBankV3 evoluciona la arquitectura de KipuBankV2 hacia un sistema **interoper
 
 kipu-bank-v3/
 ├─ src/
-│ └─ KipuBankV3.sol
+│  └─ KipuBankV3.sol
 ├─ test/
-│ └─ KipuBankV3.t.sol
+│  └─ KipuBankV3.t.sol
 ├─ lib/
-│ ├─ openzeppelin-contracts/
-│ ├─ forge-std/
-│ └─ chainlink-brownie-contracts/
+│  ├─ openzeppelin-contracts/
+│  ├─ forge-std/
+│  └─ chainlink-brownie-contracts/
 ├─ foundry.toml
 └─ README.md
+
 
 ---
 
@@ -61,7 +62,7 @@ forge install smartcontractkit/chainlink-brownie-contracts --no-git
 bash
 Copy code
 forge build
-## 🧪 Ejecución de tests
+ 🧪 Ejecución de tests
 bash
 Copy code
 forge test -vvv
@@ -75,7 +76,7 @@ Ran 4 tests for test/KipuBankV3.t.sol:KipuBankV3Test
 [PASS] testOwnerIsAdmin()
 [PASS] testExpectRevert_WhenWithdrawWithoutFunds()
 Suite result: ok. 4 passed; 0 failed; 0 skipped
-## 📈 Cobertura
+ 📈 Cobertura
 Estos tests alcanzan una cobertura de ~55 %, cubriendo depósitos, retiros, ownership y manejo de errores.
 
 📦 Despliegue en testnet (ejemplo Sepolia)
