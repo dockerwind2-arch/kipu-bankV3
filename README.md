@@ -57,11 +57,11 @@ kipu-bank-v3/
 forge install foundry-rs/forge-std --no-git
 forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-git
 forge install smartcontractkit/chainlink-brownie-contracts --no-git
-⚙️ Compilación
+## ⚙️ Compilación
 bash
 Copy code
 forge build
-🧪 Ejecución de tests
+## 🧪 Ejecución de tests
 bash
 Copy code
 forge test -vvv
@@ -75,7 +75,7 @@ Ran 4 tests for test/KipuBankV3.t.sol:KipuBankV3Test
 [PASS] testOwnerIsAdmin()
 [PASS] testExpectRevert_WhenWithdrawWithoutFunds()
 Suite result: ok. 4 passed; 0 failed; 0 skipped
-📈 Cobertura
+## 📈 Cobertura
 Estos tests alcanzan una cobertura de ~55 %, cubriendo depósitos, retiros, ownership y manejo de errores.
 
 📦 Despliegue en testnet (ejemplo Sepolia)
