@@ -43,9 +43,6 @@ kipu-bank-v3/
 ├─ foundry.toml
 └─ README.md
 
-yaml
-Copy code
-
 ---
 
 ## ⚙️ Cómo compilar y probar (Foundry)
