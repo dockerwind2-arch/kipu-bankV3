@@ -43,9 +43,8 @@ kipu-bank-v3/
 ├─ foundry.toml
 └─ README.md
 
-
 ---
-
+```
 ## ⚙️ Cómo compilar y probar (Foundry)
 
 ### 🔧 Requisitos previos
@@ -58,25 +57,22 @@ kipu-bank-v3/
 forge install foundry-rs/forge-std --no-git
 forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-git
 forge install smartcontractkit/chainlink-brownie-contracts --no-git
-## ⚙️ Compilación
-bash
-Copy code
-forge build
- 🧪 Ejecución de tests
-bash
-Copy code
-forge test -vvv
-✅ Resultado esperado:
 
-css
-Copy code
+## ⚙️ Compilación
+forge build
+
+🧪 Ejecución de tests
+forge test -vvv
+
+✅ Resultado esperado:
 Ran 4 tests for test/KipuBankV3.t.sol:KipuBankV3Test
 [PASS] testDepositUSDC()
 [PASS] testWithdrawUSDC()
 [PASS] testOwnerIsAdmin()
 [PASS] testExpectRevert_WhenWithdrawWithoutFunds()
 Suite result: ok. 4 passed; 0 failed; 0 skipped
- 📈 Cobertura
+
+📈 Cobertura
 Estos tests alcanzan una cobertura de ~55 %, cubriendo depósitos, retiros, ownership y manejo de errores.
 
 📦 Despliegue en testnet (ejemplo Sepolia)
@@ -91,87 +87,67 @@ _router	Dirección del router Uniswap V2 (ej. 0x7a250d5630B4cF539739dF2C5dAcb4c6
 _factory	Dirección de la factory Uniswap V2	
 _usdc	Dirección de contrato USDC en la red elegida	
 
-Despliegue manual
+📦 Despliegue manual
 Compilar y verificar:
-
-bash
-Copy code
 forge build
-Deploy con Forge:
 
-bash
-Copy code
+📦Deploy con Forge:
 forge create src/KipuBankV3.sol:KipuBankV3 --rpc-url <RPC_URL> --private-key <PRIVATE_KEY> --constructor-args 1000e6 0 0 1000000000 0xFeed 0xRouter 0xFactory 0xUSDC
-📡 Funciones principales
-Función	Descripción
-depositUSDC(uint256 amount)	Deposita directamente USDC en el banco.
-depositETHAndSwap(uint256 minUSDCOut)	Deposita ETH, lo intercambia por USDC y lo acredita.
-depositTokenAndSwap(address token, uint256 amount, uint256 minUSDCOut)	Deposita un token ERC20 (con par directo a USDC) y lo swappea automáticamente.
-withdrawUSDC(uint256 amount)	Retira fondos en USDC, respetando withdrawLimit.
-transferOwnership(address newAdmin)	Transfiere el rol de administrador.
-setTokenPriceFeed(address token, address feed)	Asigna un feed Chainlink (compatibilidad V2).
+```
 
-🔒 Seguridad y buenas prácticas
-ReentrancyGuard: evita ataques de reentrada en depósitos y retiros.
+### 📡 Funciones principales
+- **depositUSDC(uint256 amount)**	Deposita directamente USDC en el banco.
+- **depositETHAndSwap(uint256 minUSDCOut)**	Deposita ETH, lo intercambia por USDC y lo acredita.
+- **depositTokenAndSwap(address token, uint256 amount, uint256 minUSDCOut)** Deposita un token ERC20 (con par directo a USDC) y lo swappea automáticamente.
+- **withdrawUSDC(uint256 amount)**	Retira fondos en USDC, respetando withdrawLimit.
+- **transferOwnership(address newAdmin)**	Transfiere el rol de administrador.
+- **setTokenPriceFeed(address token, address feed)**	Asigna un feed Chainlink (compatibilidad V2).
 
-SafeERC20: garantiza transferencias seguras de tokens ERC20.
+### 🔒 Seguridad y buenas prácticas
+- **ReentrancyGuard:** evita ataques de reentrada en depósitos y retiros.
+- **SafeERC20:** garantiza transferencias seguras de tokens ERC20.
+- **Slippage control:** validación de minUSDCOut en swaps.
+- **BankCap efectivo:** no permite superar el límite global en USDC.
+- **AccessControl:** gestión de roles y transferencia segura de ownership.
+- **Errores personalizados:** mejor uso de gas y trazabilidad clara.
 
-Slippage control: validación de minUSDCOut en swaps.
+### ⚠️ Análisis de amenazas
+- **Riesgo	Mitigación**
+- **Reentrancy	nonReentrant en funciones externas críticas**
+- **Slippage / Front-running	Parámetro minUSDCOut y verificación previa expectedOut**
+- **Manipulación de precios	Uso de Chainlink feeds para referencia externa**
+- **Límite de liquidez	bankCapUSDC evita sobrecapitalización**
+- **Oráculos falsos / routers maliciosos	Admin puede configurar feeds y direcciones con validaciones**
+- **Gas alto o fallas de swap	Validación previa y revert seguro**
+- **Owner comprometido	transferOwnership controlado por rol ADMIN_ROLE**
 
-BankCap efectivo: no permite superar el límite global en USDC.
+### 💡 Decisiones de diseño
+- **Consolidar todos los depósitos en USDC simplifica la gestión y reduce la exposición a tokens volátiles.**
+- **Mantener compatibilidad con KipuBankV2 asegura interoperabilidad y migración sencilla.**
+- **Se mantiene la firma de las funciones legacy (deposit, withdraw, etc.) para backward compatibility.**
+- **Se evita lógica on-chain innecesaria (p. ej. precios dinámicos) y se delega todo a Chainlink + Uniswap.**
 
-AccessControl: gestión de roles y transferencia segura de ownership.
+### 🧪 Estrategia de testing
+**Herramientas:**
+- **Foundry (forge) con forge-std**
+- **Mocks locales para USDC, Router, Factory y Chainlink**
 
-Errores personalizados: mejor uso de gas y trazabilidad clara.
-
-⚠️ Análisis de amenazas
-Riesgo	Mitigación
-Reentrancy	nonReentrant en funciones externas críticas
-Slippage / Front-running	Parámetro minUSDCOut y verificación previa expectedOut
-Manipulación de precios	Uso de Chainlink feeds para referencia externa
-Límite de liquidez	bankCapUSDC evita sobrecapitalización
-Oráculos falsos / routers maliciosos	Admin puede configurar feeds y direcciones con validaciones
-Gas alto o fallas de swap	Validación previa y revert seguro
-Owner comprometido	transferOwnership controlado por rol ADMIN_ROLE
-
-💡 Decisiones de diseño
-Consolidar todos los depósitos en USDC simplifica la gestión y reduce la exposición a tokens volátiles.
-
-Mantener compatibilidad con KipuBankV2 asegura interoperabilidad y migración sencilla.
-
-Se mantiene la firma de las funciones legacy (deposit, withdraw, etc.) para backward compatibility.
-
-Se evita lógica on-chain innecesaria (p. ej. precios dinámicos) y se delega todo a Chainlink + Uniswap.
-
-🧪 Estrategia de testing
-Herramientas:
-Foundry (forge) con forge-std
-
-Mocks locales para USDC, Router, Factory y Chainlink
-
-Casos cubiertos:
-Creación de contrato y rol de admin ✅
-
-Depósito en USDC ✅
-
-Retiro en USDC ✅
-
-Reversión por fondos insuficientes ✅
+**Casos cubiertos:**
+**Creación de contrato y rol de admin ✅**
+**Depósito en USDC ✅**
+**Retiro en USDC ✅**
+**Reversión por fondos insuficientes ✅**
 
 Estos cubren los flujos más críticos y demuestran la correcta gestión de balances y límites.
 
-🧱 Próximos pasos
-Agregar pruebas de integración con Uniswap reales.
 
-Implementar fuzz testing.
+### 🧱 Próximos pasos
+- **Agregar pruebas de integración con Uniswap reales.**
+- **Implementar fuzz testing.**
+- **Incorporar herramientas de auditoría automática (Slither/Mythril).**
+- **Añadir un dashboard en frontend para visualizar balances y límites en tiempo real.**
 
-Incorporar herramientas de auditoría automática (Slither/Mythril).
-
-Añadir un dashboard en frontend para visualizar balances y límites en tiempo real.
-
-📍 Dirección de contrato (si desplegado)
+### 📍 Dirección de contrato (si desplegado)
 Red: Sepolia (testnet)
-
 Contrato verificado: (pendiente de deploy final)
-
 Repositorio: GitHub – kipu-bank-v3
