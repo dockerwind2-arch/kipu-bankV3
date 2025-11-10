@@ -148,6 +148,8 @@ Estos cubren los flujos más críticos y demuestran la correcta gestión de bala
 - **Añadir un dashboard en frontend para visualizar balances y límites en tiempo real.**
 
 ### 📍 Dirección de contrato (si desplegado)
-Red: Sepolia (testnet)
-Contrato verificado: (pendiente de deploy final)
-Repositorio: GitHub – kipu-bank-v3
+- 🧭 **Red:** Sepolia (Testnet)
+- ✅ **Contrato verificado:** [0x7adA18747Cbd3484995Bd1d60c65A96483c5f351](https://sepolia.etherscan.io/address/0x7adA18747Cbd3484995Bd1d60c65A96483c5f351#code)
+- 🧾 **Tx de Deploy:** [0x772798105cb4740cdb39e9883a69ddccbdd4e12127ffee3bc4e4bac9f1253750](https://sepolia.etherscan.io/tx/0x772798105cb4740cdb39e9883a69ddccbdd4e12127ffee3bc4e4bac9f1253750)
+- 👤 **Owner actual:** `0xd2D7b6107E1bfDcc98AA9744Fd6ed640816348a3`
+- 📘 **Repositorio:** [GitHub – kipu-bank-v3](https://github.com/dockerwind2-arch/kipu-bank-v3)
