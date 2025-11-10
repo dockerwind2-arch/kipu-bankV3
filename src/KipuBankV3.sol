@@ -183,7 +183,7 @@ contract KipuBankV3 is ReentrancyGuard, AccessControl {
         router = IUniswapV2Router02(_router);
         factory = IUniswapV2Factory(_factory);
         USDC = _usdc;
-        WETH = IUniswapV2Router02(_router).WETH();
+        WETH = 0xdd13E55209Fd76AfE204dBda4007C227904f0a81; // WETH Sepolia
     }
 
     /*//////////////////////////////////////////////////////////////
